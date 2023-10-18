@@ -1,6 +1,8 @@
 # app/components/charts/__init__.py
 
 import os
+
+import pandas as pd
 import streamlit.components.v1 as _components
 
 
@@ -17,9 +19,36 @@ else:
     )
 
 
-def st_visx(data, opts, key=None):
-    return _visx(data=data, opts=opts, default=[], key=key)
+def volcano_plot(data: pd.DataFrame, opts: dict, key: str = None):
+    """Create a volcano plot.
 
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Dataframe with columns "probe", "gene", "log2FC", "pval", "adj_pval",
+        and "sig"
+    opts : dict
+        Dictionary of options for the chart
+    key : str, optional
+        Unique key for the chart, by default None
 
-def volcano_plot(data, opts, key=None):
-    return _visx(data=data, opts=opts, default=[], key=key)
+    Returns
+    -------
+    dict
+        Dictionary of chart data
+    """
+
+    data = data.dropna()
+
+    data = data.to_dict(orient="records")
+
+    opts = {
+        "xaxis": "log2FC",
+        "yaxis": "neglog10_pval",
+        "xaxis_label": "log2 (fold change)",
+        "yaxis_label": "-log10 (p-value)",
+        "pval_cutoff": 0.05,
+        "fc_cutoff": 2,
+    }
+
+    return _visx(chart_type="volcano_plot", data=data, opts=opts, key=key)
