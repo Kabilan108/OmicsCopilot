@@ -22,7 +22,7 @@ chart_type = st.selectbox("Select chart type", ("volcano_plot", "heatmap", "fail
 data = pd.read_csv("components/charts/frontend/public/deg.csv")
 
 if chart_type == "volcano_plot":
-    chart_data = volcano_plot(data, opts={}, key="volcano_plot")
+    chart_data = volcano_plot(data, key="volcano_plot")
 else:
     chart_data = {"error": "No chart selected"}
 
