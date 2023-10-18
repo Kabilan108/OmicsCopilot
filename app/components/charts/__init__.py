@@ -3,20 +3,20 @@
 import os
 
 import pandas as pd
-import streamlit.components.v1 as _components
+import streamlit.components.v1 as components
 
 
 _DEBUG = False
 
 if _DEBUG:
-    _visx = _components.declare_component(
+    _visx = components.declare_component(
         "visx",
         url="http://localhost:3001",
     )
 else:
     _parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(_parent_dir, "frontend/build")
-    _visx = _components.declare_component("visx", path=build_dir)
+    _visx = components.declare_component("visx", path=build_dir)
 
 
 def volcano_plot(data: pd.DataFrame, opts: dict, key: str = None):
