@@ -1,10 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import MyComponent from "./MyComponent"
+import ChartRouter from "./ChartRouter"
 
 ReactDOM.render(
   <React.StrictMode>
-    <MyComponent />
+    <ChartRouter />
   </React.StrictMode>,
   document.getElementById("root")
 )
