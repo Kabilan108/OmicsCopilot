@@ -23,6 +23,11 @@ class ChartRouter extends StreamlitComponentBase<Args> {
     Streamlit.setFrameHeight()
   }
 
+  setComponentValue = (value: any) => {
+    console.log("setComponentValue", value)
+    Streamlit.setComponentValue(value)
+  }
+
   render() {
     const { chart_type, data, opts } = this.props.args
 
@@ -37,6 +42,7 @@ class ChartRouter extends StreamlitComponentBase<Args> {
                   opts={opts}
                   width={width}
                   height={height}
+                  setComponentValue={this.setComponentValue}
                 />
               )}
             </ParentSize>
