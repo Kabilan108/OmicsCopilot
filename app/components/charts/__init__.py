@@ -6,17 +6,17 @@ import pandas as pd
 import streamlit.components.v1 as _components
 
 
-_RELEASE = False
+_DEBUG = False
 
-if _RELEASE:
-    _parent_dir = os.path.dirname(os.path.abspath(__file__))
-    build_dir = os.path.join(_parent_dir, "frontend/build")
-    _visx = _components.declare_component("visx", path=build_dir)
-else:
+if _DEBUG:
     _visx = _components.declare_component(
         "visx",
         url="http://localhost:3001",
     )
+else:
+    _parent_dir = os.path.dirname(os.path.abspath(__file__))
+    build_dir = os.path.join(_parent_dir, "frontend/build")
+    _visx = _components.declare_component("visx", path=build_dir)
 
 
 def volcano_plot(data: pd.DataFrame, opts: dict, key: str = None):
