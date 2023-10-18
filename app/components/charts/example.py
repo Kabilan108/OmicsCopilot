@@ -1,8 +1,19 @@
+# app/components/charts/example.py
+
+import os
 import json
 import pandas as pd
 import streamlit as st
 
 from app.components.charts import volcano_plot
+
+_parent_dir = os.path.dirname(os.path.abspath(__file__))
+datapath = os.path.join(_parent_dir, "frontend/public/deg.csv")
+
+if not os.path.isfile(datapath):
+    from deg import main
+
+    main()
 
 st.subheader("Visx-based Charts")
 
