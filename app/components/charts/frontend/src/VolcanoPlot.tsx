@@ -5,6 +5,7 @@ import { Group } from "@visx/group"
 import { localPoint } from "@visx/event"
 import { Line, Circle } from "@visx/shape"
 import { Axis, AxisLeft } from "@visx/axis"
+// import { CircleClipPath } from "@visx/clip-path"
 import { GridColumns, GridRows } from "@visx/grid"
 import { withTooltip, Tooltip } from "@visx/tooltip"
 import { scaleLinear, scaleOrdinal } from "@visx/scale"
@@ -54,7 +55,13 @@ function distance(point1: [number, number], point2: [number, number]) {
 }
 
 export default withTooltip<
-  { data: Data[]; opts: Opts; width: number; height: number },
+  {
+    data: Data[]
+    opts: Opts
+    width: number
+    height: number
+    setComponentValue: any
+  },
   ToolTipData
 >(
   ({
@@ -62,6 +69,7 @@ export default withTooltip<
     opts,
     width,
     height,
+    setComponentValue,
     showTooltip,
     hideTooltip,
     tooltipOpen,
@@ -237,6 +245,7 @@ export default withTooltip<
                 onMouseLeave={handleMouseLeavePoint}
                 onTouchMove={handleMouseMovePoint}
                 onTouchEnd={handleMouseLeavePoint}
+                onClick={() => setComponentValue(d)}
               />
             ))}
           </Group>
