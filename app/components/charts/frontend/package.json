@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@visx/axis": "^3.4.0",
+    "@visx/brush": "^3.3.0",
+    "@visx/clip-path": "^3.3.0",
     "@visx/event": "^3.3.0",
     "@visx/grid": "^3.3.0",
     "@visx/legend": "^3.3.0",
