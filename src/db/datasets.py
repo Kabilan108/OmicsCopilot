@@ -25,6 +25,7 @@ def create_table():
                 name TEXT,
                 type TEXT,
                 metadata TEXT,
+                methods TEXT,
                 path TEXT,
                 id TEXT PRIMARY KEY
             )
@@ -41,13 +42,14 @@ def insert_dataset(dataset: Dataset):
         try:
             cur.execute(
                 """
-                INSERT INTO datasets (name, type, metadata, path, id)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO datasets (name, type, metadata, methods, path, id)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """,
                 (
                     dataset.name,
                     dataset.type.value,
                     dataset.metadata.model_dump_json(),
+                    dataset.methods.model_dump_json(),
                     str(dataset.path),
                     dataset.id,
                 ),
@@ -68,8 +70,14 @@ def get_datasets() -> List[Dataset]:
         datasets = []
         for row in rows:
             metadata = json.loads(row[2])
+            methods = json.loads(row[3])
             dataset = Dataset(
-                name=row[0], type=row[1], metadata=metadata, path=row[3], id=row[4]
+                name=row[0],
+                type=row[1],
+                metadata=metadata,
+                methods=methods,
+                path=row[4],
+                id=row[5],
             )
             datasets.append(dataset)
 

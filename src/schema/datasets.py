@@ -2,13 +2,15 @@
 
 # flake8: noqa E501
 
-from typing import Optional
+from typing import Optional, List
 from pathlib import Path
 from enum import Enum
 
 from pydantic import BaseModel, Field, field_serializer
 from pandas import DataFrame
 import uuid
+
+from schema.papers import MethodsSummary
 
 
 class DatasetType(str, Enum):
@@ -67,9 +69,10 @@ class Dataset(BaseModel):
         description="Metadata about the dataset.",
         examples=[{}],
     )
-    method: Optional[str] = Field(
+    methods: Optional[MethodsSummary] = Field(
         None,
-        description="A description of the methods used to generate the data.",
+        description="A detailed summary of the methods used to generate a dataset or perform some analysis.",
+        examples=[{}],
     )
     path: Optional[str | Path] = Field(
         None,

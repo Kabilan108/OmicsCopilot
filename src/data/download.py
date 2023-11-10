@@ -10,9 +10,11 @@ import click
 from pathlib import Path
 from typing import List
 import zipfile
+import json
 
 from data import MODULE_PATH
 from schema.datasets import Dataset, DatasetType
+from schema.papers import MethodsSummary
 import db.datasets as db
 
 
@@ -77,17 +79,26 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
     if not path.exists():
         path.mkdir()
 
+    # retieve dataset links
     datasets = _get_BARRA_CuRDa()
 
+    # create the database table
     db.create_table()
 
+    # load the methods summary
+    with open(path / "methods.json", "r") as f:
+        methods = MethodsSummary.model_validate(json.load(f))
+
+    # download the datasets
     progress = Progress()
     progress_bar = None
 
     try:
         with progress:
             for ds in progress.track(datasets, description="Downloading datasets..."):
+                # add attributes to the dataset
                 ds.path = path / f"{ds.link.split('/')[-1]}"
+                ds.methods = methods
 
                 if verbose:
                     progress_bar = progress.add_task(
