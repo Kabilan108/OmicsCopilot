@@ -12,7 +12,7 @@ from typing import List
 import zipfile
 
 from data import MODULE_PATH
-from data.schema import Dataset, DatasetType
+from schema.datasets import Dataset, DatasetType
 import db.datasets as db
 
 

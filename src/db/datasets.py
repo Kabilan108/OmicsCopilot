@@ -1,9 +1,16 @@
 # src/db/datasets.py
 
+from sqlite3 import InterfaceError
+from rich.console import Console
+from typing import List
 import sqlite3
 
-from data.schema import Dataset
+from schema.datasets import Dataset
 from db import DB_PATH
+import json
+
+
+console = Console()
 
 
 def create_table():
@@ -28,8 +35,6 @@ def create_table():
 def insert_dataset(dataset: Dataset):
     """Insert a dataset into the `datasets` table."""
 
-    from sqlite3 import InterfaceError
-
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
@@ -48,4 +53,24 @@ def insert_dataset(dataset: Dataset):
                 ),
             )
         except InterfaceError as E:
-            print("failed: ", E)
+            console.print(f"[red]Error:[/red] {E}")
+
+
+def get_datasets() -> List[Dataset]:
+    """Retrieve datasets from the `datasets` table."""
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM datasets")
+        rows = cur.fetchall()
+
+        datasets = []
+        for row in rows:
+            metadata = json.loads(row[2])
+            dataset = Dataset(
+                name=row[0], type=row[1], metadata=metadata, path=row[3], id=row[4]
+            )
+            datasets.append(dataset)
+
+        return datasets
