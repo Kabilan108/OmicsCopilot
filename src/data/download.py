@@ -5,14 +5,15 @@
 from rich.progress import Progress
 from rich.console import Console
 import requests
+import click
 
 from pathlib import Path
 from typing import List
 import zipfile
 
-from . import MODULE_PATH
-from .schema import Dataset, DatasetType
-import db
+from data import MODULE_PATH
+from data.schema import Dataset, DatasetType
+import db.datasets as db
 
 
 console = Console()
@@ -114,7 +115,7 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
                 db.insert_dataset(ds)
 
                 if verbose:
-                    console.print(f"Downloaded {ds.name}.")
+                    progress.print(f"Downloaded '{ds.name}'.")
                     progress.remove_task(progress_bar)
 
     except KeyboardInterrupt:
@@ -122,3 +123,19 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
         return False
 
     return True
+
+
+@click.command()
+@click.argument("dataset")
+@click.option("--path", "-p", default=None, help="Path to store data files.")
+@click.option("--verbose", "-v", is_flag=True, help="Print verbose output.")
+def main(dataset, path, verbose):
+    """Download datasets."""
+    if dataset == "barra-curda":
+        download_BARRA_CuRDa(path=path, verbose=verbose)
+    else:
+        console.print(f"Dataset {dataset} is not available.")
+
+
+if __name__ == "__main__":
+    main()
