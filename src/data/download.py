@@ -44,7 +44,7 @@ def _get_BARRA_CuRDa(format: str = "csv") -> List[Dataset]:
 
     return [
         Dataset(
-            name=f"BARRA:CuRDa - {ds['gse']} - {ds['tissue']}",
+            name=f"CuRDa - {ds['gse']} - {ds['tissue']}",
             type=DatasetType.bulkrna,
             metadata={
                 "gse": ds["gse"],
