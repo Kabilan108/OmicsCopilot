@@ -1,0 +1,107 @@
+# data/schema.py
+
+# flake8: noqa E501
+
+from typing import Optional
+from pathlib import Path
+from enum import Enum
+
+from pydantic import BaseModel, Field, field_serializer
+from pandas import DataFrame
+import uuid
+
+
+class DatasetType(str, Enum):
+    """The specific sequencing technology used to generate the data."""
+
+    bulkrna = "bulkrna"
+    scrna = "scrna"
+    ma = "ma"
+
+
+class Metadata(BaseModel):
+    """Metadata for a dataset."""
+
+    gse: Optional[str] = Field(
+        None,
+        description="The GEO Series accession number for the dataset.",
+        examples=["GSE123456"],
+    )
+    tissue: Optional[str] = Field(
+        None,
+        description="The tissue from which the sample was taken.",
+        examples=["brain", "liver", "heart"],
+    )
+    genes: Optional[int] = Field(
+        None,
+        description="The number of genes in the dataset.",
+        examples=[20000],
+    )
+    samples: Optional[int] = Field(
+        None,
+        description="The number of samples/subjects/patients in the dataset.",
+        examples=[100],
+    )
+    classes: Optional[int] = Field(
+        None,
+        description="The number of classes (or groups) in the dataset.",
+        examples=[2],
+    )
+
+
+class Dataset(BaseModel):
+    """A dataset with genomic data."""
+
+    name: str = Field(
+        ...,
+        description="A descriptive identifier for the dataset.",
+        examples=["GSE123456 - Bulk RNA-seq of human brain tissue"],
+    )
+    type: DatasetType = Field(
+        ...,
+        description="The specific sequencing technology used to generate the data.",
+        examples=["bulkrna", "scrna", "ma"],
+    )
+    metadata: Metadata = Field(
+        ...,
+        description="Metadata about the dataset.",
+        examples=[{}],
+    )
+    method: Optional[str] = Field(
+        None,
+        description="A description of the methods used to generate the data.",
+    )
+    path: Optional[str | Path] = Field(
+        None,
+        description="The path to the dataset's data file.",
+        examples=["/path/to/dataset.csv"],
+    )
+    link: Optional[str] = Field(
+        None,
+        description="A link to the dataset's data file.",
+        examples=["https://www.example.com/path/to/dataset.csv"],
+    )
+    data: Optional[DataFrame] = Field(
+        None,
+        description="The dataset's genomic data.",
+    )
+    id: Optional[str] = Field(
+        None,
+        description="A unique identifier for the dataset.",
+    )
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        self.id = str(
+            uuid.uuid5(
+                uuid.NAMESPACE_OID,
+                f"{self.name}-{self.type}-{self.metadata.model_dump()}",
+            )
+        )
+
+    @field_serializer("path")
+    def serialize_path(self, v):
+        return str(v)
+
+    class Config:
+        arbitrary_types_allowed = True

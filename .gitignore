@@ -30,6 +30,9 @@ coverage
 .env.test
 .envrc
 
+# Folders
+src/data/*
+
 # Docker volumes
 volumes/
 

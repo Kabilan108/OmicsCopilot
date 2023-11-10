@@ -19,7 +19,7 @@ st.subheader("Visx-based Charts")
 
 chart_type = st.selectbox("Select chart type", ("volcano_plot", "heatmap", "fail"))
 
-data = pd.read_csv("components/charts/frontend/public/deg.csv")
+data = pd.read_csv(datapath)
 
 if chart_type == "volcano_plot":
     chart_data = volcano_plot(data, key="volcano_plot")
