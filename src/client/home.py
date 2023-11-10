@@ -1,4 +1,4 @@
-"""Entrypoint for OmicsCopilot"""
+# src/client/home.py
 
 import streamlit as st
 
@@ -22,7 +22,10 @@ st.write("# Welcome to OmicsCopilot! 👋")
 
 st.markdown(
     """\
-Streamlit is an open-source app framework built to help research scientists
-and computational biologists analyze multi-omics data.
+Streamlit is an open-source app built to help research scientists and
+computational biologists analyze multi-omics data.
+
+To get started, go to the **Sidebar** and select the **Data** tab to upload
+your data or select from one of our curated datasets.
 """
 )
