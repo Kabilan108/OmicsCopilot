@@ -21,6 +21,7 @@ opencv-python = "^4.8.1.78"
 tiktoken = "^0.5.1"
 sentence-transformers = "^2.2.2"
 llama-hub = "^0.0.43"
+openai = "^1.2.3"
 
 
 [tool.poetry.group.dev.dependencies]
