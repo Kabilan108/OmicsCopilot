@@ -1,7 +1,5 @@
 # data/download.py
 
-# flake8: noqa E501
-
 from rich.progress import Progress
 from rich.console import Console
 import requests

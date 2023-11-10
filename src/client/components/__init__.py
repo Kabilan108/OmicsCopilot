@@ -1,7 +1,5 @@
 """Entry point for the components module"""
 
-# flake8: noqa E501
-
 from streamlit.components.v1 import html
 
 from app.components.charts import volcano_plot  # noqa: F401

@@ -1,8 +1,6 @@
 # data/schema.py
 
-# flake8: noqa E501
-
-from typing import Optional, List
+from typing import Optional
 from pathlib import Path
 from enum import Enum
 
