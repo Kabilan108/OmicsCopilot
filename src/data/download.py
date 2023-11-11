@@ -7,6 +7,7 @@ import click
 
 from pathlib import Path
 from typing import List
+from copy import copy
 import zipfile
 import json
 
@@ -117,11 +118,10 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
                     csv_file = [f for f in zip_ref.namelist() if f.endswith(".csv")][0]
                     zip_ref.extract(csv_file, path)
 
-                # Remove the downloaded ZIP file
+                # Delete the ZIP file, and update the dataset path
+                _path = copy(ds.path)
                 ds.path.unlink()
-
-                # Update the dataset path
-                ds.path = path.with_suffix("")
+                ds.path = _path.with_suffix("")
 
                 # Insert the dataset into the database
                 db.insert_dataset(ds)
