@@ -120,6 +120,9 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
                 # Remove the downloaded ZIP file
                 ds.path.unlink()
 
+                # Update the dataset path
+                ds.path = path.with_suffix("")
+
                 # Insert the dataset into the database
                 db.insert_dataset(ds)
 

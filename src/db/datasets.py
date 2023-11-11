@@ -2,12 +2,13 @@
 
 from sqlite3 import InterfaceError
 from rich.console import Console
+from pathlib import Path
 from typing import List
 import sqlite3
+import json
 
 from schema.datasets import Dataset
 from db import DB_PATH
-import json
 
 
 console = Console()
@@ -76,7 +77,7 @@ def get_datasets() -> List[Dataset]:
                 type=row[1],
                 metadata=metadata,
                 methods=methods,
-                path=row[4],
+                path=Path(row[4]),
                 id=row[5],
             )
             datasets.append(dataset)

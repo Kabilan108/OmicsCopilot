@@ -1,11 +1,11 @@
 # data/schema.py
 
-from typing import Optional
+from typing import Any, Optional
 from pathlib import Path
 from enum import Enum
 
-from pydantic import BaseModel, Field, field_serializer
-from pandas import DataFrame
+from pydantic import BaseModel, Field
+from pandas import DataFrame, read_csv
 import uuid
 
 from schema.papers import MethodsSummary
@@ -74,7 +74,7 @@ class Dataset(BaseModel):
     )
     path: Optional[str | Path] = Field(
         None,
-        description="The path to the dataset's data file.",
+        description="The path to the dataset's data file. This should be a CSV file.",
         examples=["/path/to/dataset.csv"],
     )
     link: Optional[str] = Field(
@@ -82,9 +82,9 @@ class Dataset(BaseModel):
         description="A link to the dataset's data file.",
         examples=["https://www.example.com/path/to/dataset.csv"],
     )
-    data: Optional[DataFrame] = Field(
+    data: Optional[Any] = Field(
         None,
-        description="The dataset's genomic data.",
+        description="The dataset's genomic data as a Pandas DataFrame.",
     )
     id: Optional[str] = Field(
         None,
@@ -100,9 +100,9 @@ class Dataset(BaseModel):
             )
         )
 
-    @field_serializer("path")
-    def serialize_path(self, v):
-        return str(v)
+    def load_data(self):
+        """Load the dataset's data file."""
+        self.data: DataFrame = read_csv(self.path)
 
     class Config:
         arbitrary_types_allowed = True
