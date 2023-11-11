@@ -83,3 +83,30 @@ def get_datasets() -> List[Dataset]:
             datasets.append(dataset)
 
         return datasets
+
+
+def get_dataset(id: str) -> Dataset:
+    """Retrieve a dataset from the `datasets` table that matches the provided id."""
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM datasets WHERE id=?", (id,))
+
+        row = cur.fetchone()
+
+        if row is None:
+            raise ValueError("No record found matching the provided id.")
+
+        metadata = json.loads(row[2])
+        methods = json.loads(row[3])
+        dataset = Dataset(
+            name=row[0],
+            type=row[1],
+            metadata=metadata,
+            methods=methods,
+            path=Path(row[4]),
+            id=row[5],
+        )
+
+        return dataset
