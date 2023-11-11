@@ -18,8 +18,6 @@ geoparse = "^2.0.3"
 unstructured = {extras = ["md", "pdf"], version = "^0.10.27"}
 pytesseract = "^0.3.10"
 opencv-python = "^4.8.1.78"
-tiktoken = "^0.5.1"
-sentence-transformers = "^2.2.2"
 llama-hub = "^0.0.43"
 openai = "^1.2.3"
 qdrant-client = {extras = ["fastembed"], version = "^1.6.4"}
