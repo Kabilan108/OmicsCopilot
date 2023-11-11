@@ -1,4 +1,4 @@
-# app/components/charts/deg.py
+# src/client/components/charts/deg.py
 
 import re
 import os

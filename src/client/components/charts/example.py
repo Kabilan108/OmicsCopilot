@@ -1,11 +1,11 @@
-# app/components/charts/example.py
+# src/client/components/charts/example.py
 
 import os
 import json
 import pandas as pd
 import streamlit as st
 
-from app.components.charts import volcano_plot
+from client.components.charts import volcano_plot
 
 _parent_dir = os.path.dirname(os.path.abspath(__file__))
 datapath = os.path.join(_parent_dir, "frontend/public/deg.csv")

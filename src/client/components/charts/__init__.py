@@ -1,4 +1,4 @@
-# app/components/charts/__init__.py
+# src/client/components/charts/__init__.py
 
 import os
 
