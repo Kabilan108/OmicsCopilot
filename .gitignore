@@ -7,6 +7,9 @@ package-lock.json
 dist/
 build/
 
+# Huggingface models
+models/
+
 # Logs
 *.log
 npm-debug.log*
