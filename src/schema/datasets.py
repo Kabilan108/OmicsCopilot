@@ -4,8 +4,8 @@ from typing import Any, Optional
 from pathlib import Path
 from enum import Enum
 
-from pydantic import BaseModel, Field
 from pandas import DataFrame, read_csv
+from pydantic import BaseModel, Field
 import uuid
 
 from schema.papers import MethodsSummary
