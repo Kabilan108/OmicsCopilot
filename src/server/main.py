@@ -2,9 +2,10 @@
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
-
-from server import settings
 import uvicorn
+
+from server.routes import dataqc
+from server import settings
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -19,6 +20,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add routers
+app.include_router(dataqc.router)
+
 
 @app.get("/")
 async def read_root():
@@ -27,6 +31,10 @@ async def read_root():
 
 
 if __name__ == "__main__":
-    uvicorn.run(
-        app, host=settings.API_HOST, port=settings.API_PORT, reload=settings.API_RELOAD
-    )
+    if __name__ == "__main__":
+        uvicorn.run(
+            "server.main:app",
+            host=settings.API_HOST,
+            port=settings.API_PORT,
+            reload=True,
+        )

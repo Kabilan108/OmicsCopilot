@@ -1,10 +1,9 @@
-# data/schema.py
+# schema/datasets.py
 
 from typing import Any, Optional
 from pathlib import Path
 from enum import Enum
 
-from pandas import DataFrame, read_csv
 from pydantic import BaseModel, Field
 import uuid
 
@@ -93,16 +92,16 @@ class Dataset(BaseModel):
 
     def __init__(self, **data):
         super().__init__(**data)
-        self.id = str(
+        self.id = self.id or self.generate_id()
+
+    def generate_id(self):
+        """Generate a unique identifier for the dataset."""
+        return str(
             uuid.uuid5(
                 uuid.NAMESPACE_OID,
                 f"{self.name}-{self.type}-{self.metadata.model_dump()}",
             )
         )
-
-    def load_data(self):
-        """Load the dataset's data file."""
-        self.data: DataFrame = read_csv(self.path)
 
     class Config:
         arbitrary_types_allowed = True
