@@ -5,10 +5,10 @@ import pandas as pd
 from schema.datasets import Dataset
 
 
+# TODO: Implement dataloaders in `omics` package
 def load_data(dataset: Dataset) -> Dataset:
     """Load data for a dataset."""
 
-    # TODO: Implement dataloaders in `omics` package
     if dataset.type == "bulkrna":
         dataset.data = pd.read_csv(dataset.path)
     else:

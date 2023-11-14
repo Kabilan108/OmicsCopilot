@@ -61,3 +61,10 @@ async def get_dataset(
     dataset.data = df_to_parquet(dataset.data)
 
     return dataset
+
+
+# TODO: Add /upload endpoint
+#       This will be used to upload a dataset to the server
+#       and return a unique identifier for the dataset.
+#       The dataframe should be cached in the server somewhere so that analysis
+#       can be performed on it.

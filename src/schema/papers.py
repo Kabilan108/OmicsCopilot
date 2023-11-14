@@ -18,7 +18,7 @@ class Chunk(BaseModel, ABC):
 class MethodsSummary(BaseModel):
     """A detailed summary of the methods used to generate a dataset or perform some analysis."""
 
-    # TODO: Add chain-of-desity prompting to improve summarization
+    # TODO: Add chain-of-density prompting to improve summarization
 
     summary: str = Field(
         ...,
