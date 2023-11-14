@@ -1,22 +1,46 @@
 # src/client/home.py
 
+from rich.logging import RichHandler
+from pydantic import BaseModel
+import logging
+
 import streamlit as st
 
-# from app import settings
-# from app.components import nav_page
+# from client import settings
+# from client.components import nav_page
 
 
-# -- Definitions -- #
+# --------------------------------- Definitions ------------------------------ #
 
 
-# ---- Sidebar ---- #
+# --------------------------------- Setup ----------------------------------- #
 
-
-# -- Page Setup --- #
+# configure page
 st.set_page_config(
     page_title="OmicsCopilot",
     page_icon="🧬",
+    layout="wide",
 )
+
+# configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+log = logging.getLogger(__name__)
+
+# initialize session state
+for key in ["dataset"]:
+    if key not in st.session_state:
+        st.session_state[key] = None
+
+
+# -------------------------------- Sidebar ---------------------------------- #
+
+
+# --------------------------------- Page ------------------------------------ #
 
 st.write("# Welcome to OmicsCopilot! 👋")
 
