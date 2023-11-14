@@ -1,4 +1,4 @@
-# src/server/routes/dataqc.py
+# src/server/routes/datasets.py
 
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.concurrency import run_in_threadpool
@@ -36,20 +36,20 @@ def df_to_parquet(df: pd.DataFrame) -> str:
 
 
 router = APIRouter(
-    prefix="/dataqc",
-    tags=["data qc"],
+    prefix="/datasets",
+    tags=["datasets"],
     responses={404: {"description": "Not found"}},
 )
 
 
-@router.get("/datasets", response_model=List[Dataset])
+@router.get("/", response_model=List[Dataset])
 async def list_datasets() -> List[Dataset]:
     """Get list of all curated datasets."""
 
     return db.get_datasets()
 
 
-@router.get("/datasets/{id}", response_model=Dataset)
+@router.get("/{id}", response_model=Dataset)
 async def get_dataset(
     id: str, dataset: Dataset = Depends(load_data_threadpool)
 ) -> Dataset:

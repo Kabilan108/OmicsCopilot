@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 import uvicorn
 
-from server.routes import dataqc
+from server.routes import datasets
 from server import settings
 
 app = FastAPI(
@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 # Add routers
-app.include_router(dataqc.router)
+app.include_router(datasets.router)
 
 
 @app.get("/")
