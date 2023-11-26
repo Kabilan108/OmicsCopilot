@@ -3,6 +3,9 @@ node_modules/
 package-lock.json
 .npm/
 
+# Devbox
+.devbox/
+
 # Build artifacts
 dist/
 build/
@@ -34,7 +37,7 @@ coverage
 .envrc
 
 # Folders
-src/data/*
+src/server/data/*
 
 # Docker volumes
 volumes/
@@ -72,6 +75,3 @@ db.sqlite3
 # OS-specific
 .DS_Store
 Thumbs.db
-
-# Poetry
-poetry.lock
