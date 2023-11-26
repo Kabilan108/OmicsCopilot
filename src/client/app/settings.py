@@ -1,4 +1,4 @@
-"""Settings for OmicsCopilot"""
+# src/client/app/settings.py
 
 from pydantic_settings import BaseSettings as BaseSettings
 

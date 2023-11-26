@@ -1,7 +1,5 @@
 [server]
-port = 8080
 headless = true
-runOnSave = true
 
 [browser]
 gatherUsageStats = false

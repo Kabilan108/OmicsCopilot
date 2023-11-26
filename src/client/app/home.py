@@ -1,13 +1,12 @@
-# src/client/home.py
+# src/client/app/home.py
 
 from rich.logging import RichHandler
-from pydantic import BaseModel
 import logging
 
 import streamlit as st
 
-# from client import settings
-# from client.components import nav_page
+# from app import settings
+# from app.components import nav_page
 
 
 # --------------------------------- Definitions ------------------------------ #
