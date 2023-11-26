@@ -1,4 +1,4 @@
-# schema/datasets.py
+# src/server/schema/datasets.py
 
 from typing import Any, Optional
 from pathlib import Path

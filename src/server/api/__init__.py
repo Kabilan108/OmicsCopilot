@@ -1,4 +1,4 @@
-# src/server/__init__.py
+# src/server/api/__init__.py
 
 from pydantic_settings import BaseSettings
 
@@ -15,8 +15,6 @@ class Settings(BaseSettings):
     API_RELOAD: bool
 
     CLIENT_URL: str
-
-    QDRANT_URL: str
 
 
 settings = Settings()

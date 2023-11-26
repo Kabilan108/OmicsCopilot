@@ -1,4 +1,4 @@
-# src/db/datasets.py
+# src/server/db/datasets.py
 
 from sqlite3 import InterfaceError
 from rich.console import Console

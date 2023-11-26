@@ -1,4 +1,4 @@
-# data/__init__.py
+# src/server/data/__init__.py
 
 from pathlib import Path
 

@@ -1,6 +1,4 @@
-# src/db/__init__.py
-
-# flake8: noqa E501
+# src/server/db/__init__.py
 
 from pathlib import Path
 

@@ -1,4 +1,4 @@
-# src/server/routes/datasets.py
+# src/server/api/routes/datasets.py
 
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.concurrency import run_in_threadpool

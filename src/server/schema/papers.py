@@ -1,4 +1,4 @@
-# src/schema/datasets.py
+# src/server/schema/papers.py
 
 from abc import ABC, abstractmethod
 from typing import List
