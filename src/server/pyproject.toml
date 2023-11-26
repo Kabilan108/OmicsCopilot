@@ -29,6 +29,7 @@ pyarrow = "^14.0.1"
 bokeh = "^3.3.1"
 rich = "^13.6.0"
 torch = {version = "^2.1.1+cu118", source = "pytorch-cu118"}
+transformers = "^4.35.2"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
