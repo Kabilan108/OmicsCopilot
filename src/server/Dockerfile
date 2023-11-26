@@ -40,6 +40,9 @@ RUN poetry config virtualenvs.create false \
 # Expose port 8000
 EXPOSE 8000
 
+# Download and optimize models
+CMD ["./scripts/download_models.sh"]
+
 # Copy source code
 # COPY . .
 
