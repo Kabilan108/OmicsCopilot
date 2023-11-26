@@ -1,10 +1,29 @@
 version: "3.8"
 
 services:
-  qdrant:
-    image: qdrant/qdrant:latest
+  server:
+    build: ./src/server
     ports:
-      - "6333:6333"
+      - "127.0.0.1:${API_PORT:-8000}:${API_PORT:-8000}"
     volumes:
-      - ./src/data/qdrant_data:/data
-    restart: always
+      - ./src/server:/server
+    env_file:
+      - .env
+    command: ./run_server.sh
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  client:
+    build: ./src/client
+    ports:
+      - "127.0.0.1:${CLIENT_PORT:-3000}:${CLIENT_PORT:-3000}"
+    volumes:
+      - ./src/client:/client
+    env_file:
+      - .env
+    command: ./run_client.sh
