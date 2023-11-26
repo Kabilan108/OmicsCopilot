@@ -1,6 +1,7 @@
 # src/server/api/__init__.py
 
 from pydantic_settings import BaseSettings
+from pydantic import computed_field
 
 
 class Settings(BaseSettings):
@@ -14,7 +15,13 @@ class Settings(BaseSettings):
     API_PORT: int
     API_RELOAD: bool
 
-    CLIENT_URL: str
+    CLIENT_HOST: str
+    CLIENT_PORT: int
+
+    @computed_field
+    @property
+    def CLIENT_URL(self) -> str:
+        return f"http://{self.CLIENT_HOST}:{self.CLIENT_PORT}"
 
 
 settings = Settings()
