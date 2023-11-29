@@ -1,26 +1,18 @@
-# Base image -> https://github.com/runpod/containers/blob/main/official-templates/base/Dockerfile
-# DockerHub -> https://hub.docker.com/r/runpod/base/tags
-FROM runpod/base:0.4.0-cuda11.8.0
+FROM kabilan108/runpod-base:0.1.0-cuda11.8.0
 
-# The base image comes with many system dependencies pre-installed to help you get started quickly.
-# Please refer to the base image's Dockerfile for more information before adding additional dependencies.
-# IMPORTANT: The base image overrides the default huggingface cache location.
+ARG MODEL_PATH
+ARG EMBEDDING_MODEL
 
-# --- Optional: System dependencies ---
-COPY builder/*.sh /
-RUN /bin/bash /setup.sh && \
-    /bin/bash /free_disk_space.sh && \
-    rm /*.sh
+COPY builder/free_disk_space.sh /
+RUN /bin/bash /free_disk_space.sh && \
+    rm /free_disk_space.sh
 
-# Python dependencies
 COPY builder/pyproject.toml /
-RUN poetry install --no-dev --no-interaction --no-ansi && \
+RUN poetry install --only main --no-interaction --no-ansi && \
     rm /pyproject.toml
 
-# Expose ports
 EXPOSE 8000
 
-# Add src files (Worker Template)
 ADD src .
 
-CMD python3.10 -u /handler.py
+CMD python -u /handler.py

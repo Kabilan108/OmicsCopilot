@@ -10,6 +10,7 @@ import torch
 
 from typing import Any, List
 import logging
+import os
 
 from settings import settings
 
@@ -33,8 +34,10 @@ def _download_embedding_model() -> None:
             config = AutoOptimizationConfig.O4()
 
             optim.optimize(save_dir=model_dir, optimization_config=config)
-            settings.ONNX_EMBEDDING_MODEL = model_dir
             logger.info(f"Optimized model saved to {model_dir}")
+
+            os.environ["ONNX_EMBEDDING_MODEL"] = str(model_dir)
+            settings.ONNX_EMBEDDING_MODEL = model_dir
 
         except Exception as e:
             logger.error(f"Error optimizing model: {e}")
@@ -112,3 +115,8 @@ class EmbeddingModel:
             embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
 
         return embeddings.tolist()
+
+
+if __name__ == "__main__":
+    # Download models
+    _download_embedding_model()
