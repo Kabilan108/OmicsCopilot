@@ -10,7 +10,6 @@ python = "^3.10"
 runpod = "^1.3.6"
 torch = {version = "^2.1.1+cu118", source = "pytorch-cu118"}
 transformers = "^4.35.2"
-accelerate = "^0.24.1"
 optimum = {extras = ["onnxruntime-gpu"], version = "^1.14.1"}
 pydantic = "^2.5.2"
 pydantic-settings = "^2.1.0"
