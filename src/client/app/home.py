@@ -1,8 +1,5 @@
 # src/client/app/home.py
 
-from rich.logging import RichHandler
-import logging
-
 import streamlit as st
 import requests
 
@@ -23,15 +20,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(message)s",
-    datefmt="[%X]",
-    handlers=[RichHandler(rich_tracebacks=True)],
-)
-log = logging.getLogger(__name__)
-
 # initialize session state
 for key in ["dataset"]:
     if key not in st.session_state:
@@ -40,52 +28,17 @@ for key in ["dataset"]:
 
 # -------------------------------- Sidebar ---------------------------------- #
 
-# st.sidebar.empty()
-
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-
 logout = st.sidebar.button("Logout")
-# st.sidebar.empty()
 
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-st.sidebar.markdown("#")
-
-logout = st.sidebar.button("Logout")
 
 # --------------------------------- Page ------------------------------------ #
+
+if "error" in st.session_state and st.session_state.error is not None:
+    if st.session_state.error["type"] == "auth":
+        st.error(st.session_state.error["detail"])
+        logger.error(f"Authentication error: {st.session_state.error['detail']}")
+
+    st.session_state.error = None
 
 if get_user() is not None:
     st.write("# Welcome to OmicsCopilot! 👋")
