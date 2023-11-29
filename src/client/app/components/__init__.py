@@ -1,10 +1,8 @@
 # src/client/app/components/__init__.py
 
-# flake8 noqa: E401
+# flake8: noqa F401
 
 from streamlit.components.v1 import html
-
-from app.components.charts import volcano_plot
 
 
 def nav_page(page_name, timeout_secs=3):
