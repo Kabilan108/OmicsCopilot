@@ -12,9 +12,9 @@ RUN /bin/bash /setup.sh && \
     rm /setup.sh
 
 # Python dependencies
-COPY builder/pyproject.toml builder/poetry.lock /
+COPY builder/pyproject.toml /
 RUN poetry install --no-dev --no-interaction --no-ansi && \
-    rm /pyproject.toml /poetry.lock
+    rm /pyproject.toml
 
 # Expose ports
 EXPOSE 8000
