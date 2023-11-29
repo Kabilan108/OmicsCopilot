@@ -1,4 +1,3 @@
-# Use official NVIDIA runtime with cuDNN
 FROM python:3.10.13-slim
 
 # Set working dir inside container
@@ -8,8 +7,6 @@ WORKDIR /client
 ENV TZ=America/New_York
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     build-essential \
-    python3-pip \
-    python3-dev \
     tzdata \
     && apt-get -y upgrade \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
@@ -24,7 +21,8 @@ COPY poetry.lock pyproject.toml ./
 
 # Install dependencies
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+    && poetry install --no-interaction --no-ansi
+    # --only main
 
 # Expose port 3001
 EXPOSE 3001
