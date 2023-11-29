@@ -7,9 +7,10 @@ FROM runpod/base:0.4.0-cuda11.8.0
 # IMPORTANT: The base image overrides the default huggingface cache location.
 
 # --- Optional: System dependencies ---
-COPY builder/setup.sh /setup.sh
+COPY builder/*.sh /
 RUN /bin/bash /setup.sh && \
-    rm /setup.sh
+    /bin/bash /free_disk_space.sh && \
+    rm /*.sh
 
 # Python dependencies
 COPY builder/pyproject.toml /
