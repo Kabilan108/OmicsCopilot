@@ -5,7 +5,11 @@ import logging
 
 import streamlit as st
 import requests
+import requests
 
+from config import settings, logger, get_user, set_user, clear_user
+from schema.auth import NewUser, User
+from components import nav_page
 from config import settings, logger, get_user, set_user, clear_user
 from schema.auth import NewUser, User
 from components import nav_page
@@ -40,6 +44,28 @@ for key in ["dataset"]:
 
 # -------------------------------- Sidebar ---------------------------------- #
 
+# st.sidebar.empty()
+
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+st.sidebar.markdown("#")
+
+logout = st.sidebar.button("Logout")
 # st.sidebar.empty()
 
 st.sidebar.markdown("#")
