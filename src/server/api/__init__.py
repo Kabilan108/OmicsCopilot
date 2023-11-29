@@ -2,6 +2,7 @@
 
 from pydantic_settings import BaseSettings
 from pydantic import computed_field
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -17,6 +18,15 @@ class Settings(BaseSettings):
 
     CLIENT_HOST: str
     CLIENT_PORT: int
+
+    SUPABASE_URL: str
+    SUPABASE_KEY: str
+
+    PG_USER: Optional[str] = None
+    PG_PASS: Optional[str] = None
+    PG_HOST: Optional[str] = None
+    PG_PORT: Optional[str] = None
+    PG_NAME: Optional[str] = None
 
     @computed_field
     @property
