@@ -37,6 +37,6 @@
   // "remoteUser": "devcontainer"
 
   "mounts": [
-    "source=/home/muaddib/.wakatime.cfg,target=/root/.wakatime.cfg,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.wakatime.cfg,target=/root/.wakatime.cfg,type=bind,consistency=cached"
   ]
 }
