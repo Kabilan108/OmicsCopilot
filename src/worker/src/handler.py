@@ -1,10 +1,12 @@
 # src/runpod-worker/src/handler.py
 
+import logging
 import runpod
 
 from models import EmbeddingModel
 
 
+logger = logging.getLogger(__name__)
 MODELS = {}
 
 

@@ -10,7 +10,6 @@ import torch
 
 from typing import Any, List
 import logging
-import os
 
 from settings import settings
 
@@ -21,7 +20,7 @@ logger = logging.getLogger(__name__)
 def _download_embedding_model() -> None:
     """Download the Embedding model from HuggingFace and Optimize it with ONNX."""
 
-    model_dir = settings.MODEL_PATH / "onnx" / settings.EMBEDDING_MODEL
+    model_dir = settings.ONNX_EMBEDDING_MODEL
 
     if not model_dir.exists():
         model_dir.mkdir(parents=True)
@@ -35,9 +34,6 @@ def _download_embedding_model() -> None:
 
             optim.optimize(save_dir=model_dir, optimization_config=config)
             logger.info(f"Optimized model saved to {model_dir}")
-
-            os.environ["ONNX_EMBEDDING_MODEL"] = str(model_dir)
-            settings.ONNX_EMBEDDING_MODEL = model_dir
 
         except Exception as e:
             logger.error(f"Error optimizing model: {e}")
