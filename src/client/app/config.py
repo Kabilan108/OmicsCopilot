@@ -18,16 +18,17 @@ logger = logging.getLogger(__name__)
 
 def get_user() -> Session:
     """Get the user ID from the session state."""
-    return Session(
-        user_id=st.session_state.get("user_id", ""),
-        jwt=st.session_state.get("jwt", ""),
-    )
+    return st.session_state.get("session", None)
 
 
 def set_user(user_id: str, token: str):
     """Set the user ID in the session state."""
-    st.session_state["user_id"] = user_id
-    st.session_state["jwt"] = token
+    st.session_state["session"] = Session(user_id=user_id, jwt=token)
+
+
+def clear_user():
+    """Clear the user ID from the session state."""
+    st.session_state["session"] = None
 
 
 class Settings(BaseSettings):
