@@ -2,7 +2,19 @@
 
 from pydantic_settings import BaseSettings
 from pydantic import computed_field
+from rich.logging import RichHandler
+
 from typing import Optional
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
