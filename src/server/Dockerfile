@@ -35,6 +35,9 @@ EXPOSE 8000
 # Copy source code
 # COPY . .
 
+# Download curated data
+# RUN python -m data.download barra-curda
+
 # Run the server
 # RUN chmox +x ./run_server.sh
 # CMD ["./run_server.sh"]
