@@ -4,7 +4,7 @@ from typing import Any, Optional
 from pathlib import Path
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field, field_serializer
 import uuid
 
 from schema.papers import MethodsSummary
@@ -85,23 +85,34 @@ class Dataset(BaseModel):
         None,
         description="The dataset's genomic data as a Pandas DataFrame.",
     )
-    id: Optional[str] = Field(
+    owner: Optional[str] = Field(
         None,
-        description="A unique identifier for the dataset.",
+        description="The owner of the dataset (user's uuid).",
     )
 
-    def __init__(self, **data):
-        super().__init__(**data)
-        self.id = self.id or self.generate_id()
-
-    def generate_id(self):
-        """Generate a unique identifier for the dataset."""
+    @computed_field
+    @property
+    def id(self) -> str:
+        """A unique identifier (uuid) for the dataset."""
         return str(
             uuid.uuid5(
                 uuid.NAMESPACE_OID,
                 f"{self.name}-{self.type}-{self.metadata.model_dump()}",
             )
         )
+
+    @field_serializer
+    def serialize_path(self):
+        return str(self.path)
+
+    def db_dump(self):
+        """For dumping to Supabase.""" ""
+        _dict = {k: v for k, v in self.model_dump().items() if k != "data"}
+        _dict["path"] = str(_dict["path"])
+        return _dict
+
+    def __init__(self, **data):
+        super().__init__(**data)
 
     class Config:
         arbitrary_types_allowed = True

@@ -1,7 +1,6 @@
 # src/server/data/download.py
 
 from rich.progress import Progress
-from rich.console import Console
 import requests
 import click
 
@@ -14,10 +13,8 @@ import json
 from data import MODULE_PATH
 from schema.datasets import Dataset, DatasetType
 from schema.papers import MethodsSummary
+from api import logger
 import db.datasets as db
-
-
-console = Console()
 
 
 def _get_BARRA_CuRDa(format: str = "csv") -> List[Dataset]:
@@ -81,9 +78,6 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
     # retieve dataset links
     datasets = _get_BARRA_CuRDa()
 
-    # create the database table
-    db.create_table()
-
     # load the methods summary
     with open(path / "methods.json", "r") as f:
         methods = MethodsSummary.model_validate(json.load(f))
@@ -131,7 +125,7 @@ def download_BARRA_CuRDa(path: Path | str = None, verbose: bool = True) -> bool:
                     progress.remove_task(progress_bar)
 
     except KeyboardInterrupt:
-        console.print("Download process interrupted.")
+        logger.info("Download process interrupted.")
         return False
 
     return True
@@ -146,7 +140,7 @@ def main(dataset, path, verbose):
     if dataset == "barra-curda":
         download_BARRA_CuRDa(path=path, verbose=verbose)
     else:
-        console.print(f"Dataset {dataset} is not available.")
+        logger.warning(f"Dataset {dataset} is not available.")
 
 
 if __name__ == "__main__":
