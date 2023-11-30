@@ -41,7 +41,7 @@ def get_datasets() -> List[Dataset]:
 
     try:
         data, _ = supabase.table("datasets").select("*").execute()
-        return [Dataset(**ds) for ds in data]
+        return [Dataset(**ds) for ds in data[-1]]
     except PostgrestAPIError as e:
         logger.error(f"[red]Select failed.[/red] {e}")
         return []
