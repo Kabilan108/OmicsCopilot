@@ -75,7 +75,7 @@ else:
                     st.success(r.json()["message"])
                     logger.info("User logged in successfully.")
 
-                    nav_page("data_explorer")
+                    nav_page("")
                 elif r.status_code == 400:
                     st.error(r.json()["detail"])
                 else:
@@ -106,7 +106,7 @@ else:
                     st.success(r.json()["message"])
                     logger.info("User registered successfully.")
 
-                    nav_page("data_explorer")
+                    nav_page("")
                 elif r.status_code == 400:
                     st.error(r.json()["detail"])
                 else:
