@@ -1,112 +1,62 @@
 # src/server/db/datasets.py
 
-from sqlite3 import InterfaceError
-from rich.console import Console
-from pathlib import Path
+from supabase import PostgrestAPIError
+
 from typing import List
-import sqlite3
-import json
 
+from api import logger
+from db import supabase
 from schema.datasets import Dataset
-from db import DB_PATH
 
 
-console = Console()
+def _exists() -> bool:
+    """Check if the `datasets` table exists in the database."""
+    return True
 
 
-def create_table():
-    """Create `datasets` table in `DB_PATH` database."""
-
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS datasets (
-                name TEXT,
-                type TEXT,
-                metadata TEXT,
-                methods TEXT,
-                path TEXT,
-                id TEXT PRIMARY KEY
-            )
-        """
-        )
-
-
-def insert_dataset(dataset: Dataset):
+def insert_dataset(dataset: Dataset | List[Dataset]):
     """Insert a dataset into the `datasets` table."""
 
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
+    if _exists() is False:
+        logger.error("[red]Insert failed.[/red] The `datasets` table does not exist.")
+        return False
 
-        try:
-            cur.execute(
-                """
-                INSERT INTO datasets (name, type, metadata, methods, path, id)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    dataset.name,
-                    dataset.type.value,
-                    dataset.metadata.model_dump_json(),
-                    dataset.methods.model_dump_json(),
-                    str(dataset.path),
-                    dataset.id,
-                ),
-            )
-        except InterfaceError as E:
-            console.print(f"[red]Error:[/red] {E}")
+    try:
+        if isinstance(dataset, Dataset):
+            dataset = dataset.db_dump()
+        else:
+            dataset = [ds.db_dump() for ds in dataset]
+
+        supabase.table("datasets").insert(dataset).execute()
+
+        return True
+
+    except PostgrestAPIError as e:
+        logger.error(f"[red]Insert failed.[/red] {e}")
+        return False
 
 
 def get_datasets() -> List[Dataset]:
     """Retrieve datasets from the `datasets` table."""
 
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-
-        cur.execute("SELECT * FROM datasets")
-        rows = cur.fetchall()
-
-        datasets = []
-        for row in rows:
-            metadata = json.loads(row[2])
-            methods = json.loads(row[3])
-            dataset = Dataset(
-                name=row[0],
-                type=row[1],
-                metadata=metadata,
-                methods=methods,
-                path=Path(row[4]),
-                id=row[5],
-            )
-            datasets.append(dataset)
-
-        return datasets
+    try:
+        data, _ = supabase.table("datasets").select("*").execute()
+        return [Dataset(**ds) for ds in data]
+    except PostgrestAPIError as e:
+        logger.error(f"[red]Select failed.[/red] {e}")
+        return []
 
 
-def get_dataset(id: str) -> Dataset:
+def get_dataset(id_: str) -> Dataset:
     """Retrieve a dataset from the `datasets` table that matches the provided id."""
 
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-
-        cur.execute("SELECT * FROM datasets WHERE id=?", (id,))
-
-        row = cur.fetchone()
-
-        if row is None:
-            raise ValueError("No record found matching the provided id.")
-
-        metadata = json.loads(row[2])
-        methods = json.loads(row[3])
-        dataset = Dataset(
-            name=row[0],
-            type=row[1],
-            metadata=metadata,
-            methods=methods,
-            path=Path(row[4]),
-            id=row[5],
-        )
-
-        return dataset
+    try:
+        data, _ = supabase.table("datasets").select("*").eq("id", id_).execute()
+        assert len(data[-1]) == 1
+        return Dataset(**data[-1][0])
+    except PostgrestAPIError as e:
+        logger.error(f"[red]Select failed.[/red] {e}")
+        return None
+    except AssertionError:
+        logger.error(f"[red]Select failed.[/red] No dataset with id {id_} exists.")
+        return None
