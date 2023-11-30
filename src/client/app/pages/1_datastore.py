@@ -19,12 +19,10 @@ from components import nav_page
 
 def list_datasets():
     """Get list of all curated datasets."""
-
     response = requests.get(f"{settings.API_BASE}/datasets")
     response.raise_for_status()
 
-    # return [Dataset(**ds) for ds in response.json()]
-    return {ds["id"]: Dataset(**ds) for ds in response.json()}
+    return pd.DataFrame(response.json())
 
 
 def get_dataset(id: str) -> Dataset:
@@ -48,65 +46,62 @@ st.set_page_config(
     layout="wide",
 )
 
-datasets = list_datasets()
-
+if get_user() is not None:
+    datasets = list_datasets()
 
 # -------------------------------- Sidebar ---------------------------------- #
-
-with st.sidebar.form(key="dataset-form"):
-    upload_dataset = st.file_uploader(
-        label="Upload a dataset",
-        accept_multiple_files=False,
-        type=["csv", "tsv", "txt"],
-        help="Upload a dataset to analyze. The first row should contain column names.",
-        disabled=True,
-    )
-
-    selected_dataset = st.selectbox(
-        label="Select a dataset",
-        options=list(datasets.keys()),
-        format_func=lambda x: datasets[x].name,
-    )
-
-    load_btn = st.form_submit_button(
-        label="Load dataset",
-    )
-
-with st.sidebar.form(key="qc-form"):
-    run_pca = st.checkbox(
-        label="Run PCA",
-        value=True,
-    )
-
-    run_tsne = st.checkbox(
-        label="Run t-SNE",
-        value=True,
-    )
-
-    run_umap = st.checkbox(
-        label="Run UMAP",
-        value=True,
-    )
-
-    run_btn = st.form_submit_button(
-        label="Run QC",
-    )
-
-if upload_dataset:
-    st.write(f"you uploaded: {upload_dataset.name}")
-    # TODO: Save dataset to server
-
-if load_btn:
-    logger.info(f"retrieving {selected_dataset}")
-    dataset = get_dataset(selected_dataset)
-
-    st.session_state.dataset = dataset
 
 
 # --------------------------------- Page ------------------------------------ #
 
 if get_user() is not None:
     st.write("# datastore")
+
+    tabs = st.tabs(["Datasets", "Literature"])
+
+    with tabs[0]:
+        st.write("## Datasets")
+
+        st.write("The following datasets are available for analysis.")
+
+        st.dataframe(
+            data=datasets,
+            use_container_width=True,
+            hide_index=True,
+            column_order=["name", "type", "link"],
+        )
+
+        with st.form(key="dataset-form"):
+            selected_dataset = st.selectbox(
+                label="Select a dataset",
+                index=None,
+                options=datasets["id"].tolist(),
+                format_func=lambda x: datasets[datasets["id"] == x]["name"].values[0],
+            )
+
+            upload_dataset = st.file_uploader(
+                label="Upload a dataset",
+                accept_multiple_files=False,
+                type=["csv", "tsv", "txt"],
+                help="Upload a dataset to analyze. The first row should contain column names.",
+                disabled=True,
+            )
+
+            load = st.form_submit_button(
+                label="Load dataset",
+            )
+
+    with tabs[1]:
+        st.write("## Literature")
+        st.write("The following literature is available for analysis.")
+
+    if load:
+        logger.info(f"retrieving {selected_dataset}")
+        dataset = get_dataset(selected_dataset)
+
+        logger.info(f"loaded {selected_dataset}")
+        st.success(f"loaded {selected_dataset}")
+        st.session_state.dataset = dataset
 
 else:
     nav_page("")
