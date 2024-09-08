@@ -8,6 +8,7 @@ services:
     volumes:
       - ./src/server:/server
       - .:/workspaces/OmicsCopilot:cached
+      - ./src/server/data:/mnt/arrakis/sietch/OmicsCopilot/src/server/data
     env_file:
       - .env
     command: ./run_server.sh
